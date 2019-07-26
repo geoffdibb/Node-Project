@@ -55,11 +55,11 @@ router.post("/login", (req, res) => {
             );
 
         } else {
-          return res.status(400).json(errors);
+          return res.status(400).json("Invalid password");
         }
       });
 
-    }).catch(err => res.status(404).json({ err }));
+    }).catch(err => res.status(404).json("no such user"));
 
 });
 
@@ -72,7 +72,7 @@ router.post("/createlogin", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-
+else{
   const item = new Item({
     username: req.body.username,
     email: req.body.email,
@@ -84,11 +84,17 @@ router.post("/createlogin", (req, res) => {
       if (err) throw err;
       item.password = hash;
       item.save().then(item => res.json(item))
-        .catch(err => console.log(err));
+        .catch(err => console.log("Non unique fields"));
+            return res.status(400).json("fields are not unique");
+
     });
 
   });
 }
+
+
+} 
+
 );
 
 
