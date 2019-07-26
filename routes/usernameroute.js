@@ -3,11 +3,13 @@ const router = express.Router();
 const _ = require("lodash");
 const Item = require("./usernameschema.js")
 const validateemail = require("./emailvalidation.js");
+const bcrypt = require("bcryptjs");
+
 
 //show all
 router.get("/all", (req, res) => {
   const errors = {};
-  Item.find()
+  Item.find({}, "-password")
     .then(items => {
       if (!items) {
         errors.noItems = "There are no items";
@@ -30,13 +32,17 @@ router.post("/addItem", (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: req.body.password
-})
-item.save().then(() =>{
-      res.json(item)
+  });
+ bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(item.password, salt, (err, hash) => {
+      if (err) throw err;
+      item.password = hash;
+      item.save().then(item => res.json(item))
+      .catch(err => console.log(err));
+   });
 
-console.log('complete')});
+  });
 });
-
 
 
 
