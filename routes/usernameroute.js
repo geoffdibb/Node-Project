@@ -9,7 +9,7 @@ const bcrypt = require("bcryptjs");
 // @desc    Show all - password
 // @access  Public
 //show all
-router.get("/all", (req, res) => {
+router.get("/showall", (req, res) => {
   const errors = {};
   Item.find({}, "-password")
     .then(items => {
@@ -115,19 +115,15 @@ res.status(404).send("Non unique fields");
 
 );
 
-
-
-// @route   DELETE item/username
-// @desc    Delete an account on username
+// @route   delete item/username
+// @desc    delete an account via email
 // @access  Public
-//delete
-router.delete("/delete", (req, res) => {
-  Item.deleteOne({ 'username': req.body.username })
-    .then(({ ok, n }) => {
-      res.json(Item)
-    })
-})
 
+router.delete("/deleteItem/:index", (req, res) => {
+    let index = req.params.index;
+    _.pullAt(itemArray, index);
+    res.send(itemArray);
+})
 
 module.exports = router;
 
