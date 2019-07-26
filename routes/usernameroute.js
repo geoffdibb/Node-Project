@@ -45,4 +45,3 @@ router.delete("/delete", (req, res) => {
 
 
 module.exports = router;
-© 2019 GitHub, Inc.
