@@ -68,26 +68,44 @@ router.post("/login", (req, res) => {
 // @access  Public
 //create
 router.post("/createlogin", (req, res) => {
+
   const { errors, isValid } = validateemail(req.body);
+
   if (!isValid) {
-    return res.status(400).json(errors);
-  }
-else{
+  return res.status(400).json(errors);
+  }else{
   const item = new Item({
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
     password2: req.body.password2
   });
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(item.password, salt, (err, hash) => {
-      if (err) throw err;
-      item.password = hash;
-      item.save().then(item => res.json(item))
-        .catch(err => console.log("Non unique fields"));
-            return res.status(400).json("fields are not unique");
 
-    });
+  bcrypt.genSalt(10, (err, salt) => {
+
+    bcrypt.hash(item.password, salt, (err, hash) => {
+
+    if (err) throw err;
+
+    Item.findOne({ username: req.body.username }).then(item => {
+if (!(item === null)){
+res.status(404).send("Non unique fields");
+}})
+    Item.findOne({ email: req.body.email }).then(item => {
+if (!(item === null)){
+res.status(404).send("Non unique fields");
+}})
+    item.password = hash;
+
+    item.save().then(item => {
+        
+    res.json(item)}
+      
+    )
+
+    
+    })
+
 
   });
 }
