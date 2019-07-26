@@ -56,7 +56,8 @@ router.post("/createlogin", (req, res) => {
     const item = new Item({
         username: req.body.username,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        password2: req.body.password2
   });
  bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(item.password, salt, (err, hash) => {

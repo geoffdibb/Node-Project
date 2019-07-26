@@ -16,6 +16,11 @@ module.exports = function validateemail(Item) {
     errors.email = "Email field is required";
   }
 
+if (!Validator.equals(Item.password, Item.password2)) {
+errors.password2 = "Passwords must match";
+}
+
+
   return {
     errors,
     isValid: isEmpty(errors)
