@@ -1,25 +1,36 @@
-    
-var mongoose = require('mongoose');
-var Schema  = mongoose.Schema;
 
-var itemSchema = new Schema({
+var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
+
+let Schema = mongoose.Schema;
+
+let itemSchema = new Schema({
     username: {
-    type: String,
-    required: true
+        type: String,
+        required: true,
+        unique: true,
+        uniqueCaseInsensitive: true
     },
 
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        uniqueCaseInsensitive: true
+
     },
-    
+
     password: {
-       type: String,
-        required: true
+        type: String,
+        required: true,
+
     }
 });
 
-var Item = mongoose.model(
+itemSchema.plugin(uniqueValidator);
+
+
+let Item = mongoose.model(
     'items',
     itemSchema
 );
