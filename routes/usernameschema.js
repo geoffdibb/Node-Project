@@ -13,7 +13,7 @@ var itemSchema = new Schema({
         required: true
     },
     
-    contents: {
+    password: {
        type: String,
         required: true
     }
